@@ -111,15 +111,6 @@ Monte Carlo Price ≈ 15.30
 
 The Monte Carlo simulation converges to the analytical Black–Scholes price as the number of simulations increases.
 
----
-
-## Project Structure
-
-black-scholes-option-pricing
-│
-├── black_scholes_option_pricing.ipynb
-├── requirements.txt
-└── README.md
 
 ---
 
