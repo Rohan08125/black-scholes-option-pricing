@@ -47,4 +47,3 @@ Monte Carlo Price ≈ 15.30
 
 The Monte Carlo simulation converges to the analytical Black-Scholes price as the number of simulations increases.
 
-## Project Structure
