@@ -53,10 +53,15 @@ d₂ = d₁ − σ√T
 Parameters:
 
 S : Current stock price
+
 K : Strike price
+
 r : Risk-free interest rate
+
 T : Time to maturity (years)
+
 σ : Volatility of the underlying asset
+
 
 N(.) represents the cumulative distribution function of the standard normal distribution.
 
