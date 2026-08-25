@@ -1,20 +1,20 @@
-# Black-Scholes Option Pricing
+# Black-Scholes Option Pricing with Monte Carlo Simulation
 
-This project implements the Black–Scholes model to price European call options using real market data.
-It also compares the analytical Black–Scholes price with a Monte Carlo simulation approach and computes key option sensitivities (Greeks).
+This project prices a European call option on AAPL using the analytical Black-Scholes model and validates the result with a Monte Carlo simulation. Historical volatility is estimated from daily returns, and key option Greeks are computed to study price sensitivity.
 
 ---
 
 ## Features
 
-* Download stock market data using yfinance
-* Calculate daily returns
-* Estimate annualized volatility
-* Implement the Black–Scholes option pricing formula
-* Monte Carlo simulation for option pricing
-* Compare analytical vs simulation pricing
-* Visualize option price sensitivity to volatility
-* Compute option Greeks (Delta, Gamma, Vega)
+* Download AAPL market data using yfinance
+* Calculate daily returns and annualized historical volatility
+* Implement the Black-Scholes European call pricing formula
+* Simulate stock prices using geometric Brownian motion
+* Price the option using up to 1,000,000 Monte Carlo paths
+* Analyze Monte Carlo convergence and pricing error
+* Compute Delta, Gamma, and Vega
+* Analyze option-price sensitivity to volatility
+* Visualize the simulated terminal stock-price distribution
 
 ---
 
@@ -29,20 +29,21 @@ It also compares the analytical Black–Scholes price with a Monte Carlo simulat
 
 ---
 
-## Model
+## Model Assumptions
 
-This project prices European call options using two approaches:
+The project assumes a European call option with:
 
-1. Black–Scholes analytical model
-2. Monte Carlo simulation
+* No dividends
+* Constant volatility
+* Constant risk-free interest rate
+* Lognormal stock-price dynamics
+* Geometric Brownian Motion for Monte Carlo simulation
 
----
+### Black-Scholes Model
 
-### Black–Scholes Model
+The European call price is:
 
-The Black–Scholes formula for a European call option is:
-
-C = S N(d₁) − K e^{-rT} N(d₂)
+C = S N(d₁) − K e⁻ʳᵀ N(d₂)
 
 where
 
@@ -50,72 +51,59 @@ d₁ = [ln(S/K) + (r + σ²/2)T] / (σ√T)
 
 d₂ = d₁ − σ√T
 
-Parameters:
-
-S : Current stock price
-
-K : Strike price
-
-r : Risk-free interest rate
-
-T : Time to maturity (years)
-
-σ : Volatility of the underlying asset
-
-
-N(.) represents the cumulative distribution function of the standard normal distribution.
-
----
-
 ### Monte Carlo Simulation
 
-The Monte Carlo method simulates possible future stock prices using the geometric Brownian motion model:
+Future stock prices are simulated using:
 
-S_T = S_0 exp((r − σ²/2)T + σ√T Z)
+S_T = S₀ exp((r − σ²/2)T + σ√T Z)
 
 where Z is a standard normal random variable.
 
-The option price is estimated as the discounted expected payoff:
+The option value is estimated as:
 
-C = e^{-rT} E[max(S_T − K, 0)]
+C = e⁻ʳᵀ E[max(S_T − K, 0)]
 
-As the number of simulations increases, the Monte Carlo estimate converges to the analytical Black–Scholes price.
-
----
-
-### Option Greeks
-
-The project also computes key option sensitivities (Greeks), which measure how the option price reacts to changes in market variables.
-
-Delta
-
-Δ = N(d₁)
-
-Measures the sensitivity of the option price to changes in the underlying stock price.
-
-Gamma
-
-Γ = N'(d₁) / (S σ √T)
-
-Measures the rate of change of Delta with respect to the stock price.
-
-Vega
-
-Vega = S N'(d₁) √T
-
-Measures the sensitivity of the option price to changes in volatility.
+As the number of simulated paths increases, the Monte Carlo estimate approaches the analytical Black-Scholes value.
 
 ---
 
-## Results
+## Example Setup and Results
 
-Example output from the model:
+Using AAPL data from 2023:
 
-Black–Scholes Price ≈ 15.28
-Monte Carlo Price ≈ 15.30
+| Parameter | Value |
+|---|---:|
+| Spot price | $190.55 |
+| Strike price | $200.00 |
+| Maturity | 1 year |
+| Risk-free rate | 5.00% |
+| Historical volatility | 19.95% |
+| Black-Scholes call price | $15.2845 |
+| Monte Carlo price (1M paths) | $15.3006 |
+| Absolute pricing gap | $0.0161 |
 
-The Monte Carlo simulation converges to the analytical Black–Scholes price as the number of simulations increases.
-
+The 1,000,000-path simulation produces a close approximation to the analytical benchmark. The relative pricing error is approximately 0.105%, illustrating the sampling error inherent in Monte Carlo estimation.
 
 ---
 
+## Option Greeks
+
+The model computes:
+
+* **Delta:** 0.5429
+* **Gamma:** 0.0104
+* **Vega:** 75.5783 per unit change in volatility
+
+These Greeks quantify sensitivity to changes in the underlying stock price and volatility.
+
+---
+
+## Project Structure
+
+```text
+black-scholes-option-pricing/
+├── black_scholes_option_pricing.ipynb
+├── README.md
+├── requirements.txt
+└── LICENSE
+```
